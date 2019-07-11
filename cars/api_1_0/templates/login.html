@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .top {
+            width: 100%;
+            height: 340.5px;
+            background: url("//cli-sta.guazistatic.com/c2c_web/Mask.60ff70b8a3ffb3b37457aa2c80e6165b.png") no-repeat;
+        }
+
+        .header {
+            width: 100%;
+            height: 55px;
+        }
+
+        .login {
+            width: 52px;
+            height: 27px;
+            float: right;
+            color: white;
+        }
+
+        .login_window {
+            width: 800px;
+            height: 430px;
+            background-color: aqua;
+            position: fixed;
+            top: 30px;
+            left: 20%;
+            overflow: hidden;
+        }
+
+        .window_top {
+            width: 789px;
+            height: 73.6px;
+            text-align: center;
+            font-size: 30px;
+            margin-top: 20px;
+        }
+
+        .window_middle {
+            width: 789px;
+            height: 108px;
+            text-align: center;
+        }
+
+        .window_middle p {
+            display: inline-block;
+            width: 107px;
+            height: 41.6px;
+            font-size: 20px;
+        }
+
+        .input1 {
+            width: 390px;
+            height: 30px;
+            font-size: 16px;
+        }
+
+        .input2 {
+            width: 232px;
+            height: 30px;
+            font-size: 16px;
+        }
+
+        .input3 {
+            width: 150px;
+            height: 42px;
+            background-color: #22ac38;
+            border: 0 none;
+            font-size: 16px;
+            color: white;
+            margin-left: 5px;
+        }
+
+        button {
+            width: 410px;
+            height: 50px;
+            border: 0 none;
+            color: white;
+            background-color: #22ac38;
+            display: block;
+            margin: 30px auto;
+            font-size: 30px;
+        }
+
+        .window_bottom {
+            height: 30px;
+            line-height: 30px;
+            font-size: 30px;
+            text-align: center;
+            color: #22ac38;
+            margin-top: 20px;
+        }
+
+        .window_bottom_two {
+            text-align: center;
+            font-size: 16px;
+            line-height: 16px;
+            margin-top: 8px;
+        }
+
+        .window_bottom_two a {
+            text-decoration: none;
+            color: #22ac38;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="top">
+    <div class="header">
+        <div class="login" id="logout">登出</div>
+        <div class="login" id="login-window">登录</div>
+    </div>
+</div>
+
+<div class="login_window" hidden="hidden">
+
+    <div class="window_top">瓜子二手车直卖网</div>
+
+    <div class="window_middle">
+        <form method="post">
+            <div>
+                <p>手机号码</p><input class="input1" type="text" id="phone" name="phone" placeholder="请输入你的手机号码">
+            </div>
+
+            <div>
+                <p>验证码</p><input class="input2" type="text" id="msgcode" name="code" placeholder="输入你的验证码">
+                <input class="input3" type="button" id="get-msg-code" value="获取验证码">
+            </div>
+        </form>
+    </div>
+
+    <button id="login-btn">登录</button>
+
+    <div class="window_bottom">免费咨询400-069-6530</div>
+
+    <div class="window_bottom_two">登录即视为同意
+        <a href="https://www.guazi.com/zq_term/">《用户使用协议》</a>及
+        <a href="https://www.guazi.com/zq_privacy/">《隐私权条款》</a>
+    </div>
+
+</div>
+
+</body>
+<script src="static/js/jquery-3.1.1.js"></script>
+
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // var csrftoken = getCookie('csrftoken');
+
+    $('#login-window').click(function () {
+        $('.login_window').removeAttr('hidden', 'hidden')
+    });
+    $('#logout').click(function () {
+        $.ajax({
+            url:'/api_1_0/logout',
+            type:'DELETE',
+            success:function (data) {
+                console.log(data);
+            },
+            error:function (res) {
+                console.log(res);
+            }
+        })
+    });
+    $("#get-msg-code").click(function (e) {
+        var phone = $("#phone").val();
+        if (phone === '') {
+            alert("手机号码为空")
+        } else {
+            var data = {
+                'phone': phone
+            };
+            var data_json = JSON.stringify(data);
+            $.ajax({
+                url: '/api_1_0/smgcode',
+                type: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken':getCookie('csrftoken')
+                },
+                data: data_json,
+                success: function (data) {
+                    console.log(data);
+                    alert(data['msg'])
+                },
+                error: function (res) {
+                    console.log(res)
+                }
+            });
+        }
+
+    });
+    $("#login-btn").click(function (e) {
+        var phone = $("#phone").val();
+        var msgcode = $("#msgcode").val();
+        if (phone === '') {
+            alert("手机号码为空")
+        }
+        if (msgcode === '') {
+            alert("请填写验证码")
+        } else {
+            var data = {
+                'phone': phone,
+                'msgcode': msgcode
+            };
+            var data_json = JSON.stringify(data);
+            $.ajax({
+                url: '/api_1_0/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: data_json,
+                success: function (data) {
+                    console.log(data);
+                    alert(data['msg'])
+                },
+                error: function (res) {
+                    console.log(res)
+                }
+            });
+        }
+    });
+</script>
+
+</html>
