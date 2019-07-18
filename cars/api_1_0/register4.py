@@ -6,7 +6,7 @@ from cars import redis_store, db
 from cars.models import User
 
 
-@api.route('/login')
+@api.route('/user')
 def login():
     return render_template('login.html')
 

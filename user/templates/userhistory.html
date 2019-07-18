@@ -1,0 +1,189 @@
+<html>
+<head>
+    <style type="text/css">
+        body {
+            background-color: #f8f8f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font: 12px/1.5 PingFang SC, Microsoft YaHei, arial, helvetica, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: #495056;
+            cursor: pointer;
+        }
+
+        .header {
+            height: 55px;
+            width: 100%;
+            background-color: #fcfcfc;
+        }
+
+        .top {
+            width: 1200px;
+            height: 55px;
+            margin: 0 auto;
+        }
+
+        .top span, .top a {
+            display: block;
+            font-size: 14px;
+            line-height: 55px;
+            margin-left: 40px;
+        }
+
+        .top img {
+            margin: 0 0 0 5px;
+            vertical-align: middle;
+        }
+
+        .top .phone {
+            width: 24px;
+            height: 16px;
+            margin: 18.5px 0px;
+            background-image: url(http://cli-sta.guazistatic.com/c2c_web/icon_@2x_s.5dfd8e0395d1a3188c98507b746b6df4.png);
+            background-size: 451px 300px;
+            background-position: 6px -211px;
+        }
+
+        .tl {
+            float: left;
+        }
+
+        .tr {
+            float: right;
+        }
+
+        .main {
+            width: 1100px;
+            margin: 33px auto;
+            overflow: hidden;
+        }
+
+        .left {
+
+            width: 148px;
+            height: 316px;
+            background: white;
+            margin-right: 20px;
+            display: inline-block;
+            float: left;
+            border: 1px solid #dcdcdc;
+            text-align: center;
+        }
+
+        .left img {
+            margin: 30px auto 10px;
+        }
+
+        .left #p1 {
+            font-size: 16px;
+            color: #495056;
+        }
+
+        .left #p2 {
+            font-size: 12px;
+            color: #a5abb2;
+            margin-bottom: 24px;
+        }
+
+        .left ul li a {
+            font-size: 16px;
+            line-height: 50px;
+        }
+
+        .left .active a, .active {
+            color: #fff;
+            background-color: #22ac38;
+        }
+
+        .right {
+            display: inline-block;
+            float: left;
+            width: 900px;
+            height: auto;
+            min-height: 500px;
+            background-color: #fff;
+            border: 1px solid #dcdcdc;
+            padding: 10px;
+
+            {#text-align: center;#}
+        }
+
+        .right #p1 {
+            font-size: 30px;
+            color: #757f89;
+            margin-bottom: 10px;
+        }
+
+        .right #p2 {
+            font-size: 16px;
+            color: #22ac38;
+        }
+        #history-cars li{
+            display: inline-block;
+            margin: 10px 20px;
+            text-align: center;
+        }
+        #history-cars span{
+            font-size: 16px;
+        }
+        #history-cars p:last-child{
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="top">
+        <a href="https://www.guazi.com/hz/" class="tl" style="margin:0"><img
+                src="https://cli-sta.guazistatic.com/c2c_web/Rectangle.315b81a37f3d105074d3fceea4dc364f.png" width=55px
+                height=55px alt="载入中"></a>
+        <span class="tl">杭州<img src="http://cli-sta.guazistatic.com/c2c_web/down2.d703742c145f11bed5c7dd98b3addfb0.png"
+                                width=6px height=3px></span>
+        <a href="https://www.guazi.com/hz/userstore" class="tr" style="margin-left:0px">188....8888</a>
+        <span class="phone tr"></span>
+        <span class="tr" style="margin:auto 11px ">|</span>
+        <span class="tr">热线电话 400-069-6530</span>
+        <a href="https://www.maodou.com?ca_s=xcsop_guazipc&ca_n=topbar" class="tr" style="margin-right:10px">毛豆新车</a>
+        <a href="https://jr.guazi.com/hz/?jr_from=web_loanindex&platform=web" class="tr">瓜子金融</a>
+        <a href="https://www.guazi.com/hz/intro/" class="tr">瓜子服务</a>
+        <a href="https://www.guazi.com/hz/sell/?clueS=01" class="tr">我要卖车</a>
+        <a href="https://www.guazi.com/hz/buy/" class="tr">我要买车</a>
+        <a href="https://www.guazi.com/hz/" class="tr">首页</a>
+    </div>
+</div>
+<div class="main">
+    <div class="left">
+        <img src="http://cli-sta.guazistatic.com/c2c_web/user-photo.914efa15f58c3434e88780e176608e3c.png">
+        <p id="p1">个人中心</p>
+        <p id="p2">手机号：18888888888</p>
+        <ul>
+            <li><a href="/user/userstore">收藏车辆</a></li>
+            <li><a href="/user/userreduce">降价提醒</a></li>
+            <li class="active"><a href="/user/userhistory">浏览记录</a></li>
+        </ul>
+    </div>
+    <!--右栏-->
+    <div class="right">
+        <ul id="history-cars">
+
+        </ul>
+        <div id="no-history">
+            <p id="p1">暂无收藏车辆</p>
+            <a href="https://www.guazi.com/hz/buy/"><p id="p2">去逛逛瓜子海量车源 ></p></a>
+        </div>
+    </div>
+</div>
+<img src="static/img/bottom.png">
+</body>
+<script src="static/js/jquery-3.1.1.js"></script>
+<script src="static/js/history.js"></script>
+</html>

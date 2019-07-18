@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/api/v1.0/upload_file" method="post" enctype="multipart/form-data">
+
+    <input type="file" name="file" id="file">
+    <input type="text" name="car_id" id="car_id">
+    <input type="submit" id="submit" value="submit">
+    <input type="button" id="button" value="button">
+</form>
+
+</body>
+<script src="static/js/jquery-3.1.1.js"></script>
+<script>
+    $(function () {
+        $("#button").click(function () {
+            var data = $("#file").prop('files');
+            console.log(data);
+            if (data.length === 0) {
+                alert('请选择文件');
+            } else {
+                var reader = new FileReader();//新建一个FileReader
+                reader.readAsText(data[0], "UTF-8");//读取文件
+                reader.onload = function (evt) { //读取完文件之后会回来这里
+                    var fileString = evt.target.result;
+                    //form.vm.value = fileString; //设置隐藏input的内容
+                    console.log(fileString)
+                }
+            }
+        })
+    })
+</script>
+</html>

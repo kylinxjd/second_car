@@ -6,6 +6,9 @@ from flask_wtf.csrf import CSRFProtect
 import logging
 from logging.handlers import RotatingFileHandler
 
+# from cars.user import user
+# from cars.api_1_0 import api
+
 from config import config
 
 redis_store = None
@@ -42,12 +45,14 @@ def create_app(config_name):
     # csrf.init_app(app=app)
 
     global redis_store
-    redis_store = redis.StrictRedis(host=config[config_name].REDIS_HOST, port=config[config_name].REDIS_PORT)
+    redis_store = redis.StrictRedis(host=config[config_name].REDIS_HOST,
+                                    port=config[config_name].REDIS_PORT)
 
     # logging.debug("debug模式")
     # 注册蓝图
     from cars.api_1_0 import api
-    app.register_blueprint(api, url_prefix='/api_1_0')
-    # app.register_blueprint(api, url_prefix='/api_1_0')
+    from user import user
+    app.register_blueprint(api, url_prefix='/api/v1.0')
+    app.register_blueprint(user, url_prefix='/user')
 
     return app

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+    div{
+        display: inline-block;
+    }
+    .detail-info{
+        width: 300px;
+        height: 400px;
+        overflow: hidden;
+        margin-left: 20px;
+    }
+</style>
+<body>
+<div>
+    <img id="car-img" src="" width="600" height="400" class="car-img" alt="">
+</div>
+
+<div class="detail-info">
+    <p id="p1">
+        <span>大众</span>
+        <span>polo</span>
+        <span>2015</span>
+        <span>款</span>
+    </p>
+    <p id="p2">
+        <span>23</span>
+        <span>万公里</span>
+    </p>
+    <input id="car-id" type="text" value="{{ carid }}" hidden>
+    <button id="btn" value="1">收藏</button>
+</div>
+
+</body>
+<script src="../static/js/jquery-3.1.1.js"></script>
+<script>
+
+    function initdetail(){
+        $.ajax({
+            url:'/api/v1.0/car/detail?id='+$("#car-id").val(),
+            type:'POST',
+            contentType: 'application/json',
+            dataType:'json',
+            cache:false,
+            success:function (ret) {
+                console.log(ret['data']);
+                var car_info = ret['data'];
+                $("#car-img").attr('src', car_info['index_image_url']);
+                $("#p1").html('<span>'+car_info['brand']+'</span>\n' +
+                    '        <span>'+car_info['carstyle']+'</span>\n' +
+                    '        <span>'+car_info['car_style_detail']+'</span>');
+                $("#p2").html('<span>'+car_info['milage']+'</span>\n' +
+                    '        <span>万公里</span>');
+                $("#btn").val(car_info['id'])
+            },
+            error:function (res) {
+                console.log("dc");
+                console.log(res);
+            }
+        })
+    }
+
+    $(function () {
+
+        initdetail();
+
+        $("button").click(function () {
+
+            var car_id = $(this).val();
+            {#alert(car_id);#}
+            $.ajax({
+            url:'/api/v1.0/car/collection?car_id='+car_id,
+            type:'GET',
+            contentType: 'application/json',
+            cache:false,
+            success:function (ret) {
+                console.log(ret);
+                var msg = ret['msg'];
+                if (msg){
+                    alert(ret['msg']);
+                } else {
+                    alert(ret['err'])
+                }
+
+            },
+            error:function (res) {
+                alert("dc");
+                console.log(res);
+            }
+        })
+
+        })
+    })
+
+</script>
+</html>

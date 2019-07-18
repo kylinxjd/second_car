@@ -14,17 +14,17 @@ manager.add_command('db_command', MigrateCommand)
 
 Migrate(app=app, db=db)
 
-from werkzeug.routing import BaseConverter
-
-
-class HtmlConverter(BaseConverter):
-    def __init__(self, param, *args):
-        super().__init__(param)
-
-        self.regex = args[0]
-
-
-app.url_map.converters['re'] = HtmlConverter
+# from werkzeug.routing import BaseConverter
+#
+#
+# class HtmlConverter(BaseConverter):
+#     def __init__(self, param, *args):
+#         super().__init__(param)
+#
+#         self.regex = args[0]
+#
+#
+# app.url_map.converters['re'] = HtmlConverter
 
 #
 # @app.route('/<re(".*\.html$"):html>')

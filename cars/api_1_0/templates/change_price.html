@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .change-box{
+        width: 300px;
+        height: 150px;
+        position: absolute;
+        left: 100px;
+        top: 20px;
+    }
+    .change-box *{
+        display: inline-block;
+        margin: 6px 0;
+    }
+    .change-box label{
+        position: absolute;
+        left: 10px;
+    }
+    .change-box input{
+        position: absolute;
+        left: 100px;
+    }
+    .change-box button{
+        position: absolute;
+        left: 80px;
+        width: 100px;
+    }
+</style>
+<body>
+<div class="change-box">
+    <p>carID</p>
+    <input type="text" name="car_id" id="">
+    <br>
+    <p>NewPrice</p>
+    <input type="text" name="newprice" id="">
+    <br>
+    <button type="button" id="">提交</button>
+</div>
+{#<form style="position: absolute; top: 100px">#}
+{#    <label for="carid">carID</label>#}
+{#    <input type="text" name="car_id" id="car_id">#}
+{#    <br>#}
+{#    <label for="newprice">NewPrice</label>#}
+{#    <input type="text" name="newprice" id="newprice">#}
+{#    <button type="button" id="che-btn">提交</button>#}
+{#</form>#}
+</body>
+<script type="text/javascript" src="../static/js/jquery-3.1.1.js"></script>
+<script>
+
+    $(function () {
+        $("#che-btn").click(function () {
+            var car_id = $("#car_id").val();
+            var new_price = $("#newprice").val();
+            if (car_id === ''){
+                alert("请填写carID");
+            }
+            if (new_price === ''){
+                alert("请填写新价格");
+            }
+            var data = {
+                'car_id': car_id,
+                'new_price': new_price
+            };
+            var data_json = JSON.stringify(data);
+            $.ajax({
+                url:'/api/v1.0/car/changeprice',
+                type:'POST',
+                contentType:'application/json',
+                cache:false,
+                data:data_json,
+                success:function (data) {
+                    alert('ok');
+                    console.log(data);
+                    {#alert(JSON.stringify(data))#}
+                },
+                error:function (res) {
+                    alert('not ok');
+                    console.log(res);
+                    {#alert(JSON.stringify(res))#}
+                }
+            })
+        })
+    })
+
+</script>
+</html>

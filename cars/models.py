@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from . import db
+from cars import db
+from cars.utils import constants
 
 
 class BaseModel(object):
@@ -19,6 +20,8 @@ class User(BaseModel, db.Model):
     id_card = db.Column(db.String(18), nullable=True)
     cars = db.relationship('Car', backref='user')
     order = db.relationship('Order', backref='user')
+
+    cars_collect = db.relationship('Car', secondary='s_c', backref='collectors')
 
     def __repr__(self):
         return self.name
@@ -41,13 +44,13 @@ class Car(BaseModel, db.Model):
     # 里程数
     milage = db.Column(db.DECIMAL(), default=0)
     # 排量
-    displacement = db.Column(db.Float)
+    displacement = db.Column(db.Float, nullable=True)
     # 上牌时间
     car_register_time = db.Column(db.DateTime, default=datetime.now)
     # 车架号
-    car_num = db.Column(db.String(50))
+    car_num = db.Column(db.String(50), nullable=True)
     # 颜色
-    color = db.Column(db.String(10))
+    color = db.Column(db.String(10), nullable=True)
     # 燃油类型
     car_oil = db.Column(db.String(10))
     # 排放标准
@@ -68,7 +71,44 @@ class Car(BaseModel, db.Model):
     order = db.relationship('Order', backref='car')
 
     def __repr__(self):
-        return self.id
+        return "<Car %s>" % self.id
+
+    def to_list_dict(self):
+        """
+        单个车辆实例转换成字典
+        列表页信息
+        :return:
+        """
+        car_dict = {
+            'id':self.id,
+            'brand': self.brand.name,
+            'price': self.price,
+            'carstyle': self.brand.car_style,
+            'carstyle_detail': self.brand.car_style_detail,
+            'car_register_time': self.car_register_time,
+            'car_distance': float(self.milage),
+            'milage': float(self.milage),
+            # 默认图片
+            'index_image_url': constants.QINIUURL + self.index_image_url
+        }
+        return car_dict
+
+    def to_detail_dict(self):
+        """
+        返回详细信息的字典形式
+        :return:
+        """
+        detail_dict = {
+            'id':self.id,
+            'brand':self.brand.name,
+            'price':self.price,
+            'carstyle':self.brand.car_style,
+            'car_style_detail':self.brand.car_style_detail  ,
+            'milage': float(self.milage),
+            # 默认图片
+            'index_image_url': constants.QINIUURL + self.index_image_url
+        }
+        return detail_dict
 
 
 class CarImage(db.Model):
@@ -86,7 +126,7 @@ class Brand(db.Model):
     __tablename__ = 'sc_brand'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=True, unique=True)
+    name = db.Column(db.String(20), nullable=True)
     # teacher_id = db.Column(db.Integer, db.ForeignKey('tea.id'))
     # 类型
     car_style = db.Column(db.String(50), nullable=True)
@@ -95,6 +135,15 @@ class Brand(db.Model):
 
     def __repr__(self):
         return self.name
+
+    def to_dict(self):
+        dic_info = {
+            'id': self.id,
+            'name': self.name,
+            'car_style': self.car_style,
+            'car_style_detail': self.car_style_detail
+        }
+        return dic_info
 
 
 class Order(BaseModel, db.Model):
@@ -114,6 +163,25 @@ class Order(BaseModel, db.Model):
     # turnover = db.Column(db.DECIMAL(), nullable=False)
     # # 订单号
     # serial_number = db.Column(db.String(30), nullable=False)
+
+
+# class Stu(db.Model):
+#     __tablename__ = 'stu'
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(20), nullable=True)
+#
+#
+# class Tea(db.Model):
+#     __tablename__ = 'tea'
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(20), nullable=True)
+#     stus = db.relationship('stu', secondary='s_t', backref='teas')
+
+
+st = db.Table('s_c',
+              db.Column('user_id', db.Integer, db.ForeignKey('sc_users.id'), primary_key=True),
+              db.Column('car_id', db.Integer, db.ForeignKey('sc_cars.id'), primary_key=True),
+              )
 
 # class BasicParameters(db.Model):
 #     __tablename__ = 'Basic_parameters'

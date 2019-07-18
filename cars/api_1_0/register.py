@@ -3,15 +3,12 @@ import logging
 
 from flask import render_template, request, jsonify, session
 
-from . import api
-from cars import redis_store, db
+# from . import api
+from cars.api_1_0 import api
 from cars.models import User
+
+from cars import redis_store, db
 from cars.utils.login_required import login_required
-
-
-@api.route('/login')
-def login():
-    return render_template('login.html')
 
 
 @api.route('/index')
@@ -50,6 +47,7 @@ def register():
     json_data = json.loads(data)
     phone = json_data['phone']
     input_code = json_data['msgcode']
+
 
     if not all([phone, input_code]):
         return jsonify(error_msg="数据不完整")

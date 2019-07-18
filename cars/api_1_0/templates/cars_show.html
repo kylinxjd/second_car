@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .car-list-box{
+        margin: 10px auto;
+        width: 1000px;
+        height: 600px;
+        border: 1px solid rebeccapurple;
+    }
+    #car-list li{
+        display: inline-block;
+        margin: 10px 20px;
+        text-align: center;
+    }
+    #car-list span{
+        font-size: 16px;
+    }
+    #car-list p:last-child{
+        font-size: 12px;
+    }
+</style>
+<body>
+<img src="../static/img/index.png" alt="">
+<div class="car-list-box">
+
+    <ul id="car-list">
+
+    </ul>
+
+</div>
+</body>
+<script src="../static/js/jquery-3.1.1.js"></script>
+<script>
+    function initcars(){
+        $.ajax({
+        url:'/api/v1.0/car/list',
+        type:'POST',
+        contentType: 'application/json',
+        dataType:'json',
+        cache:false,
+        success:function (ret) {
+            console.log(ret);
+            if (ret['data'].length === 0){
+                $("#no-collect").show();
+            }
+            else {
+                $("#no-collect").hide();
+            }
+            $.each(ret['data'], function (index, value) {
+                var li = '<li>\n' +
+                    '                <div>\n' +
+                    '                <a href="/api/v1.0/car/show?id='+value['id']+'">\n'+
+                    '                    <img src="'+value['index_image_url']+'" width="180" height="220" alt="">\n' +
+                    '                </a>\n' +
+                    '                    <p>\n' +
+                    '                        <span>'+value['brand']+'</span>\n' +
+                    '                        <span>'+value['carstyle']+'</span>\n' +
+                    '                        <span>'+value['car_style_detail']+'</span>\n' +
+                    '                    </p>\n' +
+                    '                    <p>\n' +
+                    '                        <span>'+value['milage']+'</span>\n' +
+                    '                        <span>万公里</span>\n' +
+                    '                        <span style="color: red">'+value['price']+'万</span>\n' +
+                    '<button value="'+value['id']+'" class="btn">收藏</button>'+
+                    '                    </p>\n' +
+                    '                    <p>\n' +
+                    '                    </p>\n' +
+                    '                </div>\n' +
+                    '            </li>';
+                console.log(value);
+                $("#car-list").append(li);
+                })
+            },
+            error:function (res) {
+                console.log("dc");
+                console.log(res);
+            }
+        })
+    }
+    $(function () {
+        initcars();
+        $('.btn').click(function () {
+            alert($(this).val());
+            alert("asdasda")
+        })
+    })
+</script>
+</html>
